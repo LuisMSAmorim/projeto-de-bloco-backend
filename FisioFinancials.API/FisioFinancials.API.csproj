@@ -7,11 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational.Design" Version="1.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="7.0.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FisioFinancials.Domain.Loader\FisioFinancials.Domain.Loader.csproj" />
     <ProjectReference Include="..\FisioFinancials.Domain.Model\FisioFinancials.Domain.Model.csproj" />
     <ProjectReference Include="..\FisioFinancials.Infrastructure.Data\FisioFinancials.Infrastructure.Data.csproj" />
     <ProjectReference Include="..\FisioFinancials.Infrastructure.IoC\FisioFinancials.Infrastructure.IoC.csproj" />

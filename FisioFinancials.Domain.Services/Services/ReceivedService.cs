@@ -3,75 +3,77 @@ using FisioFinancials.Domain.Model.Entities;
 using FisioFinancials.Domain.Model.Exceptions;
 using FisioFinancials.Domain.Model.Interfaces.Repositories;
 using FisioFinancials.Domain.Model.Interfaces.Services;
-using FisioFinancials.Infrastructure.Shared;
-using System.Net;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace FisioFinancials.Domain.Services.Services;
 
 public sealed class ReceivedService : IReceivedService
 {
     private readonly IReceivedRepository _repository;
+    private UserManager<User> _userManager;
 
     public ReceivedService
     (
-        IReceivedRepository repository
+        IReceivedRepository repository,
+        UserManager<User> userManager
     )
     {
-        _repository = repository;   
+        _repository = repository;
+        _userManager = userManager;
     }
 
-    public async Task<ApiResponse<Received>> CreateAsync(ReceivedDTO receivedDTO)
+    public async Task<ReceivedDTO> CreateAsync(ReceivedDTO receivedDTO, ClaimsPrincipal userClaims)
     {
         var (PatientName, Value, City, Local, Date) = receivedDTO;
 
-        Received received = new(PatientName, Value, City, Local, Date);
+        var user = await CurrentUser(userClaims);
 
-        await _repository.AddAsync(received);
+        Received received = new(PatientName, Value, City, Local, Date) {
+            User = user
+        };
 
-        return new ApiResponse<Received>(null, "Success", HttpStatusCode.Created);
+        return await _repository.AddAsync(received);
     }
 
-    public async Task<ApiResponse<Received>> DeleteAsync(int id)
+    public async Task DeleteAsync(int id, ClaimsPrincipal userClaims)
     {
-        try
+        var user = await CurrentUser(userClaims);
+
+        await _repository.DeleteAsync(id, user.Id);
+    }
+
+    public async Task<List<ReceivedDTO>> GetAllAsync(ClaimsPrincipal userClaims)
+    {
+        var user = await CurrentUser(userClaims);
+
+        return await _repository.GetAllAsync(user.Id);
+    }
+
+    public async Task<ReceivedDTO> GetByIdAsync(int id, ClaimsPrincipal userClaims)
+    {
+        var user = await CurrentUser(userClaims);
+
+        return await _repository.GetByIdAsync(id, user.Id);
+    }
+
+    public async Task<ReceivedDTO> UpdateAsync(int id, ReceivedDTO receivedDTO, ClaimsPrincipal userClaims)
+    {
+        var user = await CurrentUser(userClaims);
+
+        ReceivedDTO savedReceived = await _repository.GetByIdAsync(id, user.Id);
+
+        if (savedReceived == null)
         {
-            await _repository.DeleteAsync(id);
-            return new ApiResponse<Received>(null, "Success", HttpStatusCode.OK);
-        }
-        catch (ResourceNotFoundException e)
-        {
-            Console.WriteLine(e.Message);
-            return new ApiResponse<Received>(null, "Resource not found", HttpStatusCode.NotFound);
-        }
-    }
-
-    public async Task<ApiResponse<List<Received>>> GetAllAsync()
-    {
-        List<Received> receiveds = await _repository.GetAllAsync();
-
-        return new ApiResponse<List<Received>>(receiveds, "Success", HttpStatusCode.OK);
-    }
-
-    public async Task<ApiResponse<Received>> GetByIdAsync(int id)
-    {
-        Received received = await _repository.GetByIdAsync(id);
-
-        return new ApiResponse<Received>(received, "Success", HttpStatusCode.OK);
-    }
-
-    public async Task<ApiResponse<Received>> UpdateAsync(int id, ReceivedDTO receivedDTO)
-    {
-        Received received = await _repository.GetByIdAsync(id);
-
-        if (received == null)
-        {
-            return new ApiResponse<Received>(null, "Resource not found", HttpStatusCode.NotFound);
+            throw new ResourceNotFoundException("Resource not found");
         }
 
-        (received.PatientName, received.Value, received.City, received.Local, received.Date) = receivedDTO;
+        return await _repository.UpdateAsync(id, receivedDTO);
+    }
 
-        await _repository.UpdateAsync(received);
-
-        return new ApiResponse<Received>(null, "Success", HttpStatusCode.OK);
+    private async Task<User> CurrentUser(ClaimsPrincipal userClaims)
+    {
+        return await _userManager.Users.FirstOrDefaultAsync(user => user.UserName == userClaims.Identity.Name);
     }
 }

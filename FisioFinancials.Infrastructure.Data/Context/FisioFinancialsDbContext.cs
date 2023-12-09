@@ -1,9 +1,11 @@
 ﻿using FisioFinancials.Domain.Model.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FisioFinancials.Infrastructure.Data.Context;
 
-public class FisioFinancialsDbContext : DbContext
+public class FisioFinancialsDbContext : IdentityDbContext<User>
 {
      public FisioFinancialsDbContext(DbContextOptions<FisioFinancialsDbContext> options) : base(options) { }
 

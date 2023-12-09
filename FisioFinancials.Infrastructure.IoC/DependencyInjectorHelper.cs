@@ -3,7 +3,6 @@ using FisioFinancials.Domain.Model.Interfaces.Services;
 using FisioFinancials.Domain.Services.Services;
 using FisioFinancials.Infrastructure.Data.Context;
 using FisioFinancials.Infrastructure.Data.Repositories;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 

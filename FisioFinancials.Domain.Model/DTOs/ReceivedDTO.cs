@@ -2,20 +2,22 @@
 
 namespace FisioFinancials.Domain.Model.DTOs;
 
-public sealed class ReceivedDTO
+public sealed record ReceivedDTO
 {
+    public int? ReceivedId { get; set; }
     [Required]
-    public string PatientName { get; private set; }
+    public string PatientName { get; set; }
     [Required]
-    public Decimal Value { get; private set; }
+    public int Value { get; set; }
     [Required]
-    public string City { get; private set; }
+    public string City { get; set; }
     [Required]
-    public string Local { get; private set; }
+    public string Local { get; set; }
     [Required]
-    public DateTime Date { get; private set; }
+    public DateTime Date { get; set; }
+    public string? UserId { get; set; }
 
-    public void Deconstruct(out string PatientName, out Decimal Value, out string City, out string Local, out DateTime Date)
+    public void Deconstruct(out string PatientName, out int Value, out string City, out string Local, out DateTime Date)
     {
         PatientName = this.PatientName;
         Value = this.Value;

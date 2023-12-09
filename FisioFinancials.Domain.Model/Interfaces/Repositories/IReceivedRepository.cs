@@ -6,9 +6,9 @@ namespace FisioFinancials.Domain.Model.Interfaces.Repositories;
 
 public interface IReceivedRepository
 {
-    Task AddAsync(Received received);
-    Task<Received> GetByIdAsync(int id);
-    Task<List<Received>> GetAllAsync();
-    Task UpdateAsync(Received received);
-    Task DeleteAsync(int id);
+    Task<ReceivedDTO> AddAsync(Received received);
+    Task<ReceivedDTO> GetByIdAsync(int id, string userId);
+    Task<List<ReceivedDTO>> GetAllAsync(string userId);
+    Task<ReceivedDTO> UpdateAsync(int id, ReceivedDTO receivedDTO);
+    Task DeleteAsync(int id, string userId);
 }
