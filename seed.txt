@@ -1,0 +1,6 @@
+903fd6ef-52cf-45a4-b854-5a2b0f662377,Aluno,Infnet,aluno.infnet@al.infnet.edu.br,Infnet,INFNET,Infnet123@
+1,Maria Da Silva,320,Florianópolis,Clínica,14/11/2023 00:00:00,903fd6ef-52cf-45a4-b854-5a2b0f662377
+2,Ana Silveira,280,Florianópolis,Domiciliar,15/11/2023 00:00:00,903fd6ef-52cf-45a4-b854-5a2b0f662377
+3,Antonia Matos,300,São José,Clínica,15/11/2023 00:00:00,903fd6ef-52cf-45a4-b854-5a2b0f662377
+4,Joaquina Oliveira,400,Florianópolis,Clínica,16/11/2023 00:00:00,903fd6ef-52cf-45a4-b854-5a2b0f662377
+5,Amanda Farias,360,São José,Clínica,17/11/2023 00:00:00,903fd6ef-52cf-45a4-b854-5a2b0f662377
